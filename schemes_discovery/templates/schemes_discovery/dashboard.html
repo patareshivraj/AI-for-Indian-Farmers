@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Farm 360 - Farmer Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(27, 67, 50, 0.05);
+        }
+        .active-nav-glow {
+            box-shadow: 0 0 15px rgba(161, 244, 200, 0.4);
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8f9fa;
+        }
+        /* Hide scrollbars but keep functionality */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#116c4a",
+                        "surface-container": "#edeeef",
+                        "on-tertiary-container": "#d89b00",
+                        "on-background": "#191c1d",
+                        "warning-amber": "#FB8500",
+                        "success-green": "#2D6A4F",
+                        "on-surface-variant": "#414844",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#002114",
+                        "on-tertiary-fixed": "#271900",
+                        "inverse-surface": "#2e3132",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#ffba27",
+                        "on-primary-container": "#86af99",
+                        "primary-container": "#1b4332",
+                        "on-tertiary-fixed-variant": "#5e4100",
+                        "on-surface": "#191c1d",
+                        "secondary-fixed-dim": "#86d7ad",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#005236",
+                        "surface": "#f8f9fa",
+                        "surface-variant": "#e1e3e4",
+                        "on-primary-fixed-variant": "#274e3d",
+                        "tertiary-container": "#503700",
+                        "tertiary": "#342300",
+                        "surface-container-low": "#f3f4f5",
+                        "inverse-primary": "#a5d0b9",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-dim": "#d9dadb",
+                        "primary": "#012d1d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#a1f4c8",
+                        "tertiary-fixed": "#ffdea9",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#a5d0b9",
+                        "background": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f8f9fa",
+                        "on-secondary-container": "#1b724f",
+                        "outline": "#717973",
+                        "primary-fixed": "#c1ecd4",
+                        "surface-glass": "rgba(255, 255, 255, 0.7)",
+                        "outline-variant": "#c1c8c2",
+                        "surface-tint": "#3f6653",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary-container": "#a1f4c8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "12px",
+                        "stack-lg": "40px",
+                        "container-margin": "20px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "stack-md": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Outfit"],
+                        "body-md": ["Outfit"],
+                        "body-lg": ["Outfit"],
+                        "button-text": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "headline-xl": ["Outfit"],
+                        "label-md": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-lg": ["20px", {"lineHeight": "30px", "fontWeight": "400"}],
+                        "button-text": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["16px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface-glass backdrop-blur-md dark:bg-surface-container/80 border-b border-outline-variant/10 shadow-sm flex items-center justify-between px-container-margin h-16">
+<div class="flex items-center gap-3">
+<img alt="Farmer profile picture" class="w-10 h-10 rounded-full border-2 border-secondary/20 object-cover" data-alt="A close-up high-resolution portrait of a smiling Indian farmer in a sun-drenched rural setting. He is wearing traditional white linen attire, with the warm golden hour sunlight illuminating his face and highlighting textures of wisdom and resilience. The background features soft bokeh of lush green fields, following the brand's aesthetic of dependable and optimistic agricultural leadership." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo3dFspZz3WFj068XH3hQaQ8yuCM5YBd-4G6y0ORdgcQ1ACncUHITCxbqoydV-qCwjNaY7PGgiwOhGt5qlDUnz4_Jb5srev5FFtRatvNJmJGlt5R_k8ZtPr_7SCOWZdj51Uo1xyaroNy4g2l7nKzThyFKNYBCDIgHneymwdy224HnKh19_SoqsEd13MRT9PuPyee-tSbcctImdg76R9mNArcouJFzYT5tl-frudhrnOw4i6fBCUHgFSdu9J0AIWeeVhUUxHzOQzr3j"/>
+<span class="text-headline-lg-mobile font-headline-lg-mobile text-secondary dark:text-secondary-fixed">Farm 360</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-primary transition-all active:scale-95 hover:bg-surface-container-low">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<main class="pt-24 px-container-margin space-y-stack-md">
+<!-- Hero Section -->
+<section class="space-y-2 animate-in fade-in slide-in-from-bottom-4 duration-700">
+<h1 class="font-headline-xl text-headline-xl text-primary leading-tight">Namaste, Farmer!</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[80%]">Grow your future with modern agricultural solutions tailored for your land.</p>
+</section>
+<!-- Search Bar -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-tertiary-container text-2xl">search</span>
+</div>
+<input class="w-full h-[60px] pl-14 pr-6 bg-white/60 backdrop-blur-xl border border-outline-variant/30 rounded-2xl font-body-md text-body-md focus:ring-2 focus:ring-secondary focus:border-secondary transition-all shadow-sm group-hover:shadow-md outline-none" placeholder="Find agricultural schemes..." type="text"/>
+</div>
+<!-- Dashboard Feature Cards (Bento) -->
+<div class="grid grid-cols-2 gap-4">
+<div class="col-span-1 bg-secondary-container p-5 rounded-2xl flex flex-col justify-between h-40 shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl">wb_sunny</span>
+<div class="text-on-secondary-container">
+<p class="font-label-md text-label-md opacity-80">Weather</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile">28°C</p>
+</div>
+</div>
+<div class="col-span-1 bg-tertiary-fixed p-5 rounded-2xl flex flex-col justify-between h-40 shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-tertiary-fixed text-3xl">payments</span>
+<div class="text-on-tertiary-fixed">
+<p class="font-label-md text-label-md opacity-80">Pending Pay</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile">₹2,500</p>
+</div>
+</div>
+</div>
+<!-- Body: Schemes List -->
+<section class="space-y-stack-sm pb-10">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Personalized Scheme Matches</h2>
+<button class="text-secondary font-label-md text-label-md">View All</button>
+</div>
+<!-- Card 1 -->
+<div class="glass-card p-5 rounded-2xl shadow-[0_8px_24px_rgba(27,67,50,0.08)] space-y-4 animate-in fade-in slide-in-from-right-8 duration-500 delay-100">
+<div class="flex justify-between items-start">
+<div class="space-y-1 pr-4">
+<span class="inline-block px-3 py-1 bg-secondary/10 text-secondary rounded-full text-xs font-bold uppercase tracking-wider">Insurance</span>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-primary leading-tight">PMFBY Crop Insurance</h3>
+</div>
+<div class="relative w-16 h-16 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-outline-variant/20" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-on-tertiary-container" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175.9" stroke-dashoffset="35.18" stroke-width="4"></circle>
+</svg>
+<span class="absolute font-bold text-sm text-on-tertiary-container">80%</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Comprehensive risk insurance to provide financial support to farmers suffering from crop loss.</p>
+<div class="flex items-center justify-between pt-2">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="Small avatar of a farmer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-pzqtDWPQMuxzRhZlZyQ7RvJ2w460EuyE52t_N95bd4UFDyyrGeIwoPkuo8hxPbPx5EueDWxIyzu132uXj-Gd7ZlCjoFWR7hFc5j1UGTf2FSXt4l9t3teTkHIAKj249mKH0VxrWKnWn2nyDU0GyMRHb9p_exFIhNsGlMUY3XDFSARePAhXM5p0s0i0fh8_1KuoR52k1Rs93d8wg5gEui26tO9-Z0xnCxFBC6L9waoCmAf95YLV8DPh2F_xi0QOL8PdTAhj_wIbn1C"/>
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="Small avatar of a farmer." src=""/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-container-high flex items-center justify-center text-[10px] font-bold">+12k</div>
+</div>
+<button class="px-8 py-3 bg-secondary text-white font-button-text text-button-text rounded-full shadow-lg active:scale-95 transition-transform hover:bg-primary">
+                        Apply Now
+                    </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-card p-5 rounded-2xl shadow-[0_8px_24px_rgba(27,67,50,0.08)] space-y-4 animate-in fade-in slide-in-from-right-8 duration-500 delay-200">
+<div class="flex justify-between items-start">
+<div class="space-y-1 pr-4">
+<span class="inline-block px-3 py-1 bg-warning-amber/10 text-warning-amber rounded-full text-xs font-bold uppercase tracking-wider">Direct Benefit</span>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-primary leading-tight">PM-Kisan Samman Nidhi</h3>
+</div>
+<div class="relative w-16 h-16 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-outline-variant/20" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-on-tertiary-container" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175.9" stroke-dashoffset="17.59" stroke-width="4"></circle>
+</svg>
+<span class="absolute font-bold text-sm text-on-tertiary-container">90%</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Direct income support of ₹6,000 per year to all landholding farmer families across the country.</p>
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-success-green">verified</span>
+<span class="text-label-md text-on-surface-variant">Eligible</span>
+</div>
+<button class="px-8 py-3 bg-secondary text-white font-button-text text-button-text rounded-full shadow-lg active:scale-95 transition-transform hover:bg-primary">
+                        Apply Now
+                    </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-card p-5 rounded-2xl shadow-[0_8px_24px_rgba(27,67,50,0.08)] space-y-4 animate-in fade-in slide-in-from-right-8 duration-500 delay-300 opacity-60">
+<div class="flex justify-between items-start">
+<div class="space-y-1 pr-4">
+<span class="inline-block px-3 py-1 bg-outline/10 text-outline rounded-full text-xs font-bold uppercase tracking-wider">Equipment</span>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-primary leading-tight">Sub-Mission on Mechanization</h3>
+</div>
+<div class="relative w-16 h-16 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-outline-variant/20" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-on-tertiary-container" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175.9" stroke-dashoffset="70.36" stroke-width="4"></circle>
+</svg>
+<span class="absolute font-bold text-sm text-on-tertiary-container">60%</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Subsidies on farm machinery to increase reach of farm mechanization to small and marginal farmers.</p>
+<div class="flex items-center justify-between pt-2">
+<span class="text-label-md text-error italic">Requires Land Documents</span>
+<button class="px-8 py-3 bg-secondary text-white font-button-text text-button-text rounded-full shadow-lg active:scale-95 transition-transform hover:bg-primary">
+                        Apply Now
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-glass backdrop-blur-lg dark:bg-surface-container-lowest/90 shadow-[0_-8px_24px_rgba(27,67,50,0.08)] h-20 px-4 pb-2 flex justify-around items-center">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-4 py-1 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<!-- Schemes -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-md text-label-md">Schemes</span>
+</a>
+<!-- Market -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-label-md text-label-md">Market</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for the search bar
+        const searchInput = document.querySelector('input');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-[1.02]');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-[1.02]');
+        });
+
+        // Seed-to-Sprout Micro-interaction for buttons (vibration feel)
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(10);
+                }
+            });
+        });
+
+        // Atmospheric parallax on scroll for header shadow
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+                header.classList.remove('shadow-sm');
+            } else {
+                header.classList.add('shadow-sm');
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body></html>
