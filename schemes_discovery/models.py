@@ -63,3 +63,39 @@ class Scheme(models.Model):
 
     def __str__(self):
         return self.scheme_name
+
+class SchemeMaster(models.Model):
+    canonical_name = models.CharField(max_length=512, unique=True)
+    scheme_type = models.CharField(max_length=50)
+    description = models.TextField()
+    eligibility = models.JSONField()
+    benefits = models.JSONField()
+    documents_required = models.JSONField()
+    apply_url = models.URLField(max_length=1024, null=True, blank=True)
+    
+    current_version = models.CharField(max_length=10, default="v1.0")
+    data_quality_score = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.canonical_name
+
+class SchemeVersion(models.Model):
+    scheme_master = models.ForeignKey(SchemeMaster, on_delete=models.CASCADE, related_name='versions')
+    version_number = models.CharField(max_length=10)
+    snapshot = models.JSONField(help_text="Full JSON snapshot of the SchemeMaster state")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class SourceMapping(models.Model):
+    scheme_master = models.ForeignKey(SchemeMaster, on_delete=models.CASCADE, related_name='sources')
+    extracted_scheme = models.OneToOneField(Scheme, on_delete=models.CASCADE)
+    contribution_type = models.CharField(max_length=50) 
+    mapped_at = models.DateTimeField(auto_now_add=True)
+
+class AuditHistory(models.Model):
+    scheme_master = models.ForeignKey(SchemeMaster, on_delete=models.CASCADE)
+    change_type = models.CharField(max_length=50)
+    details = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
