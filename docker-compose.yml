@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: farm360
+      POSTGRES_USER: farm_user
+      POSTGRES_PASSWORD: farm_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 --workers 3 farm_360_backend.wsgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - DATABASE_URL=postgres://farm_user:farm_password@db:5432/farm360
+      - REDIS_URL=redis://redis:6379/0
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    depends_on:
+      - db
+      - redis
+
+  celery:
+    build: .
+    command: celery -A farm_360_backend worker -l info
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgres://farm_user:farm_password@db:5432/farm360
+      - REDIS_URL=redis://redis:6379/0
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
