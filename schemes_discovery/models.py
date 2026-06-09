@@ -99,3 +99,38 @@ class AuditHistory(models.Model):
     change_type = models.CharField(max_length=50)
     details = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+class FarmerProfile(models.Model):
+    user_id = models.CharField(max_length=255, unique=True)
+    state = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+    land_holding_size = models.FloatField(help_text="In hectares")
+    farmer_category = models.CharField(max_length=50) # Marginal, Small, Large
+    crop_type = models.JSONField(help_text="List of current crops")
+    irrigation_status = models.CharField(max_length=50)
+    annual_income = models.IntegerField()
+    gender = models.CharField(max_length=20)
+    age = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Farmer {self.user_id} - {self.state}"
+
+class SchemeRecommendation(models.Model):
+    farmer = models.ForeignKey(FarmerProfile, on_delete=models.CASCADE, related_name='recommendations')
+    scheme = models.ForeignKey(SchemeMaster, on_delete=models.CASCADE)
+    
+    total_score = models.IntegerField()
+    ai_reasoning = models.TextField()
+    matched_conditions = models.JSONField()
+    unclear_conditions = models.JSONField()
+    
+    is_dismissed = models.BooleanField(default=False)
+    is_applied = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class RecommendationFeedback(models.Model):
+    recommendation = models.OneToOneField(SchemeRecommendation, on_delete=models.CASCADE)
+    user_rating = models.IntegerField(choices=[(1, 'Not Relevant'), (2, 'Helpful'), (3, 'Applied')])
+    feedback_text = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
