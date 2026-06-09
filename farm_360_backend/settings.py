@@ -147,18 +147,18 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Celery Configuration Options
-CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+# Celery Configuration Options (Local Development)
+# For local Windows development without Redis/Docker, we run Celery synchronously.
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_STORE_EAGER_RESULT = True
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 
-# Caching
+# Caching (Local Development)
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': os.environ.get('REDIS_URL', 'redis://localhost:6379/0'),
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
