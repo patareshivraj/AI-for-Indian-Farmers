@@ -1,11 +1,19 @@
 from django.db import models
 
 class DiscoveredURL(models.Model):
-    url = models.URLField(max_length=1024, unique=True)
+    url = models.URLField(max_length=1024, unique=True, db_index=True)
+    title = models.CharField(max_length=512, null=True, blank=True)
+    source_domain = models.CharField(max_length=255, db_index=True, default='')
+    
+    discovery_query = models.CharField(max_length=255, default='')
+    discovery_score = models.IntegerField(default=0)
+    is_relevant = models.BooleanField(default=True)
+    
     is_processed = models.BooleanField(default=False)
+    status_code = models.IntegerField(null=True, blank=True)
+    
     discovered_at = models.DateTimeField(auto_now_add=True)
     last_checked_at = models.DateTimeField(auto_now=True)
-    status_code = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.url
