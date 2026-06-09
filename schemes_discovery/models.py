@@ -49,10 +49,14 @@ class Scheme(models.Model):
     benefits = models.JSONField(help_text="List of financial or material benefits")
     documents_required = models.JSONField(help_text="List of required documents")
     
-    official_url = models.URLField(max_length=1024)
+    official_url = models.URLField(max_length=1024, null=True, blank=True)
     apply_url = models.URLField(max_length=1024, null=True, blank=True)
     
     source_hash = models.CharField(max_length=64, unique=True, help_text="SHA-256 of AI extracted content")
+    confidence_score = models.FloatField(default=0.0)
+    needs_review = models.BooleanField(default=False)
+    extracted_from = models.ForeignKey(ExtractedContent, on_delete=models.SET_NULL, null=True, blank=True, related_name='schemes')
+    
     discovered_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
