@@ -77,7 +77,7 @@ def call_groq_extraction(text_chunk: str) -> ExtractedSchemesList:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": f"Extract scheme details from this text:\n\n{text_chunk}"}
         ],
-        model="llama3-70b-8192",
+        model="llama-3.3-70b-versatile",
         temperature=0.0,
         response_format={"type": "json_object"}
     )

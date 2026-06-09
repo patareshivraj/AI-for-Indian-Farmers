@@ -33,8 +33,13 @@ def evaluate_scheme_eligibility(farmer: FarmerProfile, scheme: SchemeMaster) -> 
     1. Compare the Farmer Profile against the Scheme Eligibility Criteria.
     2. If there is a direct disqualification (e.g., scheme is for SC, farmer is General), return is_eligible: false and score 0.
     3. If the profile matches all criteria, score highly (80-100).
-    4. If criteria are mentioned but the farmer profile doesn't specify (e.g. requires 1 hectare, but profile doesn't state size), list it in 'unclear_conditions'.
-    5. Return valid JSON only.
+    4. If criteria are mentioned but the farmer profile doesn't specify, list it in 'unclear_conditions'.
+    5. Return valid JSON only containing EXACTLY these keys:
+       - "is_eligible" (boolean)
+       - "base_match_score" (integer 0-100)
+       - "reasoning_summary" (string explanation)
+       - "matched_conditions" (array of strings)
+       - "unclear_conditions" (array of strings)
     """
     
     user_prompt = f"""
@@ -51,7 +56,7 @@ def evaluate_scheme_eligibility(farmer: FarmerProfile, scheme: SchemeMaster) -> 
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-            model="llama3-70b-8192",
+            model="llama-3.3-70b-versatile",
             temperature=0.0,
             response_format={"type": "json_object"}
         )
@@ -81,6 +86,7 @@ def generate_recommendations(farmer: FarmerProfile):
             continue
             
         ai_eval = evaluate_scheme_eligibility(farmer, scheme)
+        print(f"DEBUG: {ai_eval}")
         if not ai_eval or not ai_eval.is_eligible:
             continue
             

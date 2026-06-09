@@ -30,7 +30,7 @@ def ask_groq_arbiter(name_a: str, name_b: str, desc_a: str, desc_b: str) -> bool
     try:
         completion = client.chat.completions.create(
             messages=[{"role": "user", "content": prompt}],
-            model="llama3-8b-8192",
+            model="llama-3.1-8b-instant",
             temperature=0.0,
             response_format={"type": "json_object"}
         )
