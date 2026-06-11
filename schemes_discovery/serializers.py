@@ -6,7 +6,7 @@ class SchemeMasterSerializer(serializers.ModelSerializer):
         model = SchemeMaster
         fields = [
             'id', 'canonical_name', 'scheme_type', 'description',
-            'eligibility', 'benefits', 'documents_required', 'apply_url',
+            'eligibility', 'benefits', 'documents_required', 'apply_url', 'official_url',
             'current_version', 'data_quality_score', 'updated_at'
         ]
 

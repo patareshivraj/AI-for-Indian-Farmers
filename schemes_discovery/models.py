@@ -72,6 +72,7 @@ class SchemeMaster(models.Model):
     benefits = models.JSONField()
     documents_required = models.JSONField()
     apply_url = models.URLField(max_length=1024, null=True, blank=True)
+    official_url = models.URLField(max_length=1024, null=True, blank=True)
     
     current_version = models.CharField(max_length=10, default="v1.0")
     data_quality_score = models.IntegerField(default=0)

@@ -59,7 +59,8 @@ def create_snapshot(master: SchemeMaster) -> dict:
         "eligibility": master.eligibility,
         "benefits": master.benefits,
         "documents_required": master.documents_required,
-        "apply_url": master.apply_url
+        "apply_url": master.apply_url,
+        "official_url": master.official_url
     }
 
 def process_extracted_scheme(ext_scheme: ExtractedScheme):
@@ -141,6 +142,7 @@ def process_extracted_scheme(ext_scheme: ExtractedScheme):
                 benefits=ext_scheme.benefits,
                 documents_required=ext_scheme.documents_required,
                 apply_url=ext_scheme.apply_url,
+                official_url=ext_scheme.official_url,
                 data_quality_score=int(ext_scheme.confidence_score * 100)
             )
             
